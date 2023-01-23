@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { addTodos } from '../redux/reducer';
+import { addTodos, removeTodos } from '../redux/reducer';
 
 
 const mapStateToProps = (state) => {
@@ -10,7 +10,8 @@ const mapStateToProps = (state) => {
 }
 const mapSidpatchToProps = (dispatch) => {
     return {
-        addTodos: (obj) => dispatch(addTodos(obj)),
+        addTodo: (obj) => dispatch(addTodos(obj)),
+        removeTodo: (id) => dispatch(removeTodos(id)),
     }
 }
 
@@ -28,7 +29,7 @@ const Todos = (props) => {
             <button
                 className='add-btn'
                 onClick={() =>
-                    props.addTodos({
+                    props.addTodo({
                         id: Math.floor(Math.random() * 1000),
                         item: todo,
                         completed: false,
@@ -37,7 +38,9 @@ const Todos = (props) => {
             >Add</button>
             <ul>
                 {props.todos.map(item => {
-                    return <li key={item.id}>{item.item}</li>
+                    return <li key={item.id}>
+                        {item.item} <button onClick={() => props.removeTodo(item.id)}>Delete</button>
+                    </li>
                 })}
             </ul>
         </div>
